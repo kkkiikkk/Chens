@@ -1,0 +1,27 @@
+<h1>Workspaces</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Picture</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @workspaces.each do |workspace| %>
+      <tr>
+        <td><%= workspace.name %></td>
+        <td><%= workspace.description %></td>
+        <td><%= image_tag(workspace.picture) if workspace.picture.present? %></td>
+        <td>
+          <%= link_to 'Show', workspace_path(workspace) %> |
+          <%= link_to 'Delete', workspace_path(workspace), method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Create New Workspace', new_workspace_path %>
