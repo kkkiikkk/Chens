@@ -1,0 +1,45 @@
+<h1>Edit Workspace</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Picture</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @workspace.name %></td>
+      <td><%= @workspace.description %></td>
+      <td>
+        <%= image_tag(@workspace.picture.attached? ? @workspace.picture : '/assets/default_profile') %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Update Workspace Information</h2>
+
+<%= form_with(model: @workspace, local: true) do |f| %>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :picture %><br>
+    <%= f.file_field :picture %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update Workspace" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Workspaces', workspaces_path %>

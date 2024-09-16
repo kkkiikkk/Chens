@@ -14,10 +14,12 @@
       <tr>
         <td><%= workspace.name %></td>
         <td><%= workspace.description %></td>
-        <td><%= image_tag(workspace.picture) if workspace.picture.present? %></td>
+        <td>
+          <%= image_tag(workspace.picture.attached? ? workspace.picture : '/assets/default_profile') %>
+        </td>
         <td>
           <%= link_to 'Show', workspace_path(workspace) %> |
-          <%= link_to 'Delete', workspace_path(workspace), method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= link_to 'Delete', workspace_path(workspace), data: { turbo_method: :delete, confirm: 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>

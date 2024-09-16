@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  resources :workspaces
+  devise_for :users
+  resources :workspaces do
+    resource :user_workspace, only: [:edit, :update]
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

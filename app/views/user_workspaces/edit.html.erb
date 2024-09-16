@@ -1,0 +1,30 @@
+<%= form_with(model: [@workspace, @user_workspace], local: true) do |f| %>
+  <div class="field">
+    <%= f.label :profile_name %>
+    <%= f.text_field :profile_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :profile_description %>
+    <%= f.text_area :profile_description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :profile_status %>
+    <%= f.select :profile_status, ['away', 'break', 'online', 'busy'] %>
+  </div>
+
+  <div class="field">
+    <%= f.label :profile_title %>
+    <%= f.text_field :profile_title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :profile_avatar %>
+    <%= f.file_field :profile_avatar %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update Profile" %>
+  </div>
+<% end %>

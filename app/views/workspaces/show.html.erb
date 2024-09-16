@@ -1,3 +1,7 @@
-<h1>
-  <%= @workspace.name %>
-</h1>
+<h1><%= @workspace.name %></h1>
+<p><%= @workspace.description %></p>
+
+<h2>Your Profile in this Workspace</h2>
+<p>Profile Name: <%= @user_workspace.profile_name %></p>
+<p>Status: <%= @user_workspace.profile_status %></p>
+<p>Description: <%= @user_workspace.profile_description %></p>
