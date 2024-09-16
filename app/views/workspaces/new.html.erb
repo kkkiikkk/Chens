@@ -1,0 +1,24 @@
+<h1>Create New Workspace</h1>
+
+<%= form_for(@workspace) do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :picture %>
+    <%= f.file_field :picture %>
+  </div>
+
+  <div>
+    <%= f.submit 'Create Workspace' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Workspaces', workspaces_path %>
