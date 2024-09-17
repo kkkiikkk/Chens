@@ -5,3 +5,21 @@
 <p>Profile Name: <%= @user_workspace.profile_name %></p>
 <p>Status: <%= @user_workspace.profile_status %></p>
 <p>Description: <%= @user_workspace.profile_description %></p>
+
+<h2>Invite a User</h2>
+
+<%= form_with(model: [@workspace, @invite], local: true) do |form| %>
+  <div class="field">
+    <%= form.label :email, "User Email" %>
+    <%= form.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :invite_type, "Invite Type" %>
+    <%= form.select :invite_type, options_for_select([['Private', 'private'], ['Public', 'public']]) %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Send Invite" %>
+  </div>
+<% end %>
