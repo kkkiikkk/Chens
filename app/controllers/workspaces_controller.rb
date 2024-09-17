@@ -8,7 +8,7 @@ class WorkspacesController < ApplicationController
 
   def show
     @user_workspace = @workspace.user_workspaces.find_by(user: current_user)
-
+    @invite = @workspace.invites.new
     unless @user_workspace
       redirect_to workspaces_path, alert: 'You are not associated with this workspace.'
     end
@@ -22,8 +22,9 @@ class WorkspacesController < ApplicationController
     @workspace = Workspace.new(workspace_params)
     @workspace.user = current_user
 
-    if @workspace.valid?
-      WorkspacesUserService::Create.new(@workspace).call(current_user)
+    result = WorkspacesUserService::Create.call(@workspace, current_user)
+
+    if result.success?
       redirect_to workspaces_path, notice: 'Workspace was successfully created.'
     else
       render :new

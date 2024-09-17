@@ -1,0 +1,15 @@
+<%= form_for(model: [@workspace, @invite]) do |f| %>
+  <div class="field">
+    <%= f.label :invite_type %>
+    <%= f.select :invite_type, ['private', 'public'] %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Create Invite" %>
+  </div>
+<% end %>

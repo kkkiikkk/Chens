@@ -1,4 +1,5 @@
 class UserWorkspacesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_workspace
   before_action :set_user_workspace, only: [:edit, :update]
 
@@ -24,7 +25,10 @@ class UserWorkspacesController < ApplicationController
   end
 
   def set_workspace
-    @workspace = Workspace.find(params[:workspace_id])
+    @workspace = current_user.workspaces.find_by(id: params[:id])
+    unless @workspace
+      redirect_to workspaces_path, alert: 'Workspace not found or not accessible.'
+    end
   end
 
   def user_workspace_params

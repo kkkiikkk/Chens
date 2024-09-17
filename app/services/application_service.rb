@@ -27,7 +27,8 @@ class ApplicationService
   def failure(exception, options = {})
     raise exception if @propagate
 
-    ErrorService.error(exception, options)
+    # TODO 
+    # ErrorService.error(exception, options)
     Response.new(false, nil, exception)
   end
 end

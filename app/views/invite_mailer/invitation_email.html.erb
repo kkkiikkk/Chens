@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Invitation to workspace</h1>
+    <p>Dear <%= @invite.email %>,</p>
+    <p>You were invited to "<%= @workspace.name %>".</p>
+    <p>Follow the link to accept the invitation: <%= link_to 'Link', accept_invite_url(token: @invite.token) %>.</p>
+  </body>
+</html>

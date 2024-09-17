@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   devise_for :users
   resources :workspaces do
     resource :user_workspace, only: [:edit, :update]
+    resource :invites, only: [:create]
   end
+
+  get 'invites/accept/:token', to: 'invites#accept', as: 'accept_invite'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
