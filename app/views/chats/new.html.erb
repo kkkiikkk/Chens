@@ -1,0 +1,33 @@
+<%= form_for [@workspace, @chat] do |f| %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :chat_type %>
+    <%= f.select :chat_type, options_for_select([['Public', 'public'], ['Private', 'private'], ['P2P', 'p2p']]), {}, class: 'form-control' %>
+  </div>
+
+  <div class="form-group" id="companion-field" style="display: none;">
+    <%= label_tag :companion_id, 'Companion User ID' %>
+    <%= text_field_tag :companion_id, nil, class: 'form-control' %>
+  </div>
+
+  <%= f.submit 'Create Chat', class: 'btn btn-primary' %>
+<% end %>
+
+<script>
+  document.addEventListener('turbolinks:load', function() {
+    const chatTypeField = document.querySelector('select[name="chat[chat_type]"]');
+    const companionField = document.getElementById('companion-field');
+    
+    chatTypeField.addEventListener('change', function() {
+      if (chatTypeField.value === 'p2p') {
+        companionField.style.display = 'block';
+      } else {
+        companionField.style.display = 'none';
+      }
+    });
+  });
+</script>
