@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     resource :invites, only: [:create]
     
     resources :chats do
-      resources :chat_members, only: [:index, :new, :create, :destroy]
+      resources :chat_members, only: [:index, :new, :create, :destroy, :edit, :update]
     end
   end
 

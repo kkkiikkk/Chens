@@ -8,8 +8,20 @@ class ChatsController < ApplicationController
   end
 
   def show
-    @chat = @workspace.chats.find(params[:id])
+    @chat = @workspace.chats.find_by(id: params[:id])
+  
+    if @chat.nil?
+      redirect_to workspace_chats_path(@workspace), notice: 'Chat not found.'
+      return
+    end
+  
+    return if @chat.chat_type == 'public'
+  
+    unless @chat.chat_members.exists?(user_id: current_user.id)
+      redirect_to workspace_chats_path(@workspace), notice: 'You cannot access this chat as you are not a member.'
+    end
   end
+  
 
   def new
     @chat = @workspace.chats.new
@@ -23,9 +35,7 @@ class ChatsController < ApplicationController
       @chat = @workspace.chats.new(chat_params)
       render :new
     end
-  end
-  
-  
+  end  
 
   def destroy
     @chat = @workspace.chats.find(params[:id])
@@ -51,5 +61,9 @@ class ChatsController < ApplicationController
     if !WorkspacePolicy.new(current_user, @workspace).owner?
       redirect_to workspaces_path, notice: 'You can not manage the chat because you are not workspace owner'
     end
+  end
+
+  def chat_member
+    @chat.chat_members.find_by(user_id: current_user[:id])
   end
 end
