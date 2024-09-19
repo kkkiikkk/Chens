@@ -24,18 +24,18 @@ class ChatsController < ApplicationController
   
 
   def new
-    @chat = @workspace.chats.new
   end
 
   def create
-    result = ChatsService::Create.call(current_user, chat_params, @workspace)
+    result = ChatsService::Create.call(current_user, params, @workspace)
     if result.success?
       redirect_to workspace_chats_path(@workspace), notice: result[:payload][:text]
     else
-      @chat = @workspace.chats.new(chat_params)
-      render :new
+      puts result[:error]
+      render :new, status: :unprocessable_entity
     end
-  end  
+  end
+  
 
   def destroy
     @chat = @workspace.chats.find(params[:id])
@@ -54,7 +54,7 @@ class ChatsController < ApplicationController
   end
 
   def chat_params
-    params.require(:chat).permit(:name, :chat_type, :companion_id)
+    params.permit(:name, :chat_type).merge(companion_id: params[:companion_id])
   end
 
   def require_workspace_owner!

@@ -3,7 +3,7 @@ class ChatMembersController < ApplicationController
   before_action :set_workspace
   before_action :set_chat
   before_action :set_chat_member
-  before_action :require_permissions, only: [:new, :create, :edit, :update]
+  before_action :require_permissions!, only: [:new, :create, :edit, :update]
   before_action :require_owner!, only: [:edit, :update]
 
   def index
@@ -55,10 +55,10 @@ class ChatMembersController < ApplicationController
   end
 
   def target_chat_member(id)
-    @target_chat_member ||= @chat.chat_members.find_by(id: id)  # Memoization to prevent redundant queries
+    @target_chat_member ||= @chat.chat_members.find_by(id: id)
   end
 
-  def require_permissions
+  def require_permissions!
     if !ChatMemberPolicy.new(current_user, @chat_member).can_manage?
       redirect_to workspaces_path, alert: 'You do not have access to manage chat members'
     end

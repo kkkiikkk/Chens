@@ -11,15 +11,7 @@ class ChatMemberPolicy < ApplicationPolicy
     record.role == 'owner'
   end
 
-  def can_remove?
+  def can_manage?
     ['owner', 'admin'].include?(record.role)
-  end
-
-  def can_add_members?
-    ['owner', 'admin'].include?(record.role)
-  end
-
-  def owner_can_remove?
-    !record_owner?
   end
 end
