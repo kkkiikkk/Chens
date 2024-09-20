@@ -2,13 +2,10 @@ class MessagesController < ApplicationController
   before_action :set_workspace
   before_action :set_chat
   before_action :check_user_in_chat, only: [:new, :create, :edit, :update, :destroy, :index]
+  before_action :set_message, only: [:edit, :update, :destroy]
 
   def index
     @messages = @chat.messages
-  end
-
-  def new
-    @message = Message.new
   end
 
   def create
@@ -16,46 +13,44 @@ class MessagesController < ApplicationController
     @message.sender = current_user
 
     if @message.save
-      redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message sent successfully.'
+      respond_to do |format|
+        format.html { redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message sent successfully.' }
+      end
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  def edit
-    @message = Message.find(params[:id])
-  end
-
   def update
-    @message = Message.find(params[:id])
     if @message.update(chat_params)
-      redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message updated successfully.'
+      respond_to do |format|
+        format.html { redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message updated successfully.' }
+      end
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @message = Message.find(params[:id])
-    result = MessagesService::Destroy.call(@message, current_user)
-  
-    if result.success?
-      redirect_to workspace_chat_messages_path(@workspace, @chat), notice: result[:payload][:text]
-    else
-      redirect_to workspace_chat_messages_path(@workspace, @chat), alert: result[:error]
+    @message.destroy
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message deleted.' }
     end
   end
 
   private
 
   def set_workspace
-    @workspace = current_user.workspaces.find_by(id: params[:workspace_id])
-    redirect_to workspaces_path, alert: 'Workspace not found or not accessible.' unless @workspace
+    @workspace = current_user.workspaces.find_by!(id: params[:workspace_id])
   end
   
   def set_chat
-    @chat = @workspace.chats.find_by(id: params[:chat_id])
-    redirect_to workspace_chats_path(@workspace), alert: 'Chat not found.' unless @chat
+    @chat = @workspace.chats.find_by!(id: params[:chat_id])
+  end
+
+  def set_message
+    @message = @chat.messages.find(params[:id])
   end
 
   def check_user_in_chat

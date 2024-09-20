@@ -1,25 +1,23 @@
 <h1>Messages in <%= @chat.name %></h1>
 
-<%= link_to 'New Message', new_workspace_chat_message_path(@workspace, @chat), class: 'btn btn-primary' %>
+<div id="chat" data-chat-id="<%= @chat.id %>">
+  
+  <div id="messages" class="messages-list">
+    <% @messages.each do |message| %>
+      <%= render partial: "message", locals: { message: message, workspace: @workspace, chat: @chat } %>
+    <% end %>
+  </div>
 
-<ul class="messages-list">
-  <% @messages.each do |message| %>
-    <li class="message">
-      <strong><%= message.sender.name %>:</strong> <%= message.text %>
-      <% if message.image.present? %>
-        <div class="message-image">
-          <%= image_tag message.image %>
-        </div>
-      <% end %>
-      <% if message.reply %>
-        <div class="message-reply">
-          <strong>Reply to:</strong> <%= link_to message.reply.text.truncate(30), workspace_chat_message_path(@workspace, @chat, message.reply) %>
-        </div>
-      <% end %>
-      <div class="message-actions">
-        <%= link_to 'Edit', edit_workspace_chat_message_path(@workspace, @chat, message), class: 'btn btn-warning' %>
-        <%= link_to 'Delete', workspace_chat_message_path(@workspace, @chat, message), data: { turbo_method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+  <turbo-frame id="new_message">
+    <%= form_with(model: [@workspace, @chat, Message.new], local: false) do |form| %>
+      <div class="form-group">
+        <%= form.text_area :text, placeholder: "Enter your message", class: "form-control" %>
       </div>
-    </li>
-  <% end %>
-</ul>
+      <div class="form-group">
+        <%= form.file_field :image, class: "form-control" %>
+      </div>
+      <%= form.submit "Send", class: "btn btn-primary" %>
+    <% end %>
+  </turbo-frame>
+
+</div>

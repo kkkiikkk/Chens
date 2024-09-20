@@ -1,0 +1,1 @@
+<%= turbo_stream.replace "message_#{@message.id}", partial: "messages/message", locals: { message: @message, workspace: @workspace, chat: @chat } %>
