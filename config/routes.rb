@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     
     resources :chats do
       resources :chat_members, only: [:index, :new, :create, :destroy, :edit, :update]
+      resources :messages, only: [:index, :new, :create, :destroy, :edit, :update]
     end
   end
 

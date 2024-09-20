@@ -31,7 +31,6 @@ class ChatsController < ApplicationController
     if result.success?
       redirect_to workspace_chats_path(@workspace), notice: result[:payload][:text]
     else
-      puts result[:error]
       render :new, status: :unprocessable_entity
     end
   end

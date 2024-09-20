@@ -1,0 +1,17 @@
+<h1>Edit Message</h1>
+
+<%= form_with model: [@workspace, @chat, @message], local: true do |form| %>
+  <div class="form-group">
+    <%= form.label :text %>
+    <%= form.text_area :text, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :image, "Change Image" %>
+    <%= form.file_field :image, class: 'form-control' %>
+  </div>
+
+  <%= form.submit 'Update Message', class: 'btn btn-primary' %>
+<% end %>
+
+<%= link_to 'Back to Messages', workspace_chat_messages_path(@workspace, @chat), class: 'btn btn-secondary' %>

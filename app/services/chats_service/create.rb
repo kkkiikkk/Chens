@@ -3,7 +3,7 @@ module ChatsService
     def call(current_user, params, workspace)
       @user = current_user
       @params = params
-      @chat = Chat.new(chat_type: @params[:chat_type], chat_status: 'active', name: @params[:name], workspace: workspace)
+      @chat = Chat.new(chat_type: @params[:chat_type], chat_status: 'active', name: @params[:chat_name], workspace: workspace)
 
       if @params[:chat_type] == 'p2p'
         create_p2p_chat
