@@ -14,6 +14,7 @@ class MessagesController < ApplicationController
 
     if @message.save
       respond_to do |format|
+        format.turbo_stream
         format.html { redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message sent successfully.' }
       end
     else
@@ -24,6 +25,7 @@ class MessagesController < ApplicationController
   def update
     if @message.update(chat_params)
       respond_to do |format|
+        format.turbo_stream
         format.html { redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message updated successfully.' }
       end
     else

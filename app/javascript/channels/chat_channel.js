@@ -13,10 +13,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       received(data) {
         const messagesContainer = document.getElementById('messages')
-        if (messagesContainer) {
+
+        if (data.action === 'create') {
           messagesContainer.insertAdjacentHTML('beforeend', data.message)
-        } else {
-          console.log("Messages container not found.")
+        }
+
+        if (data.action === 'update') {
+          const messageElement = document.getElementById(`message_${data.message_id}`)
+          if (messageElement) {
+            messageElement.outerHTML = data.message
+          }
+        }
+
+        if (data.action === 'destroy') {
+          const messageElement = document.getElementById(`message_${data.message_id}`)
+          if (messageElement) {
+            messageElement.remove()
+          }
         }
       }
     })
