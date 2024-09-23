@@ -29,7 +29,7 @@ class ChatsController < ApplicationController
   def create
     result = ChatsService::Create.call(current_user, params, @workspace)
     if result.success?
-      redirect_to workspace_chats_path(@workspace), notice: result[:payload][:text]
+      redirect_to workspace_chats_path(@workspace), notice: result[:payload]
     else
       render :new, status: :unprocessable_entity
     end

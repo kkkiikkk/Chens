@@ -80,7 +80,7 @@ class ChatMembersController < ApplicationController
 
   def handle_result(result)
     if result.success?
-      redirect_to workspace_chats_path(@workspace), notice: result[:payload][:text]
+      redirect_to workspace_chats_path(@workspace), notice: result[:payload]
     else
       redirect_to workspace_chats_path(@workspace), alert: result[:error]
     end

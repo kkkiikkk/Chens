@@ -18,9 +18,9 @@ module ChatsService
       if @chat.save
         ChatMember.create!(user: @user, chat: @chat, role: 'owner')
         ChatMember.create!(user_id: @params[:companion_id], chat: @chat, role: 'owner')
-        success({ text: "Chat was successfully created" })
+        success("Chat was successfully created")
       else
-        failure({ text: "Chat can't be created. Please try again later." })
+        failure("Chat can't be created. Please try again later.")
       end
     end
 
@@ -28,12 +28,12 @@ module ChatsService
       if @chat.save
         new_chat_member = ChatMember.new(user: @user, chat: @chat, role: 'owner')
         if new_chat_member.save
-          success({ text: "Chat was successfully created" })
+          success("Chat was successfully created")
         else          
-          failure({ text: "Chat can't be created. Please try again later." })
+          failure("Chat can't be created. Please try again later.")
         end
       else
-        failure({ text: "Chat can't be created. Please try again later." })
+        failure("Chat can't be created. Please try again later.")
       end
     end
   end

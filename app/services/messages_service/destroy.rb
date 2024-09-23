@@ -7,7 +7,7 @@ module MessagesService
 
       if can_destroy_message?
         @message.destroy
-        success({ text: 'Message successfully deleted.' })
+        success('Message successfully deleted.')
       else
         failure('You are not authorized to delete this message.')
       end

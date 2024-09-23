@@ -21,21 +21,14 @@ class ChatsQuery
   end
 
   def public_chats_sql
-    Chat.select('*')
-        .where(workspace_id: @workspace.id, chat_type: 'public', chat_status: 'active')
+    Chat.public_chats.active.for_workspace(@workspace.id)
   end
 
   def private_chats_sql
-    Chat.select('chats.*')
-        .joins(:chat_members)
-        .where(workspace_id: @workspace.id, chat_type: 'private', chat_status: 'active')
-        .where(chat_members: { user_id: @user.id })
+    Chat.private_chats.active.for_workspace(@workspace.id).joins(:chat_members).where(chat_members: { user_id: @user.id })
   end
 
   def p2p_chats_sql
-    Chat.select('chats.*')
-        .joins(:chat_members)
-        .where(workspace_id: @workspace.id, chat_type: 'p2p', chat_status: 'active')
-        .where(chat_members: { user_id: @user.id })
+    Chat.p2p_chats.active.for_workspace(@workspace.id).joins(:chat_members).where(chat_members: { user_id: @user.id })
   end
 end

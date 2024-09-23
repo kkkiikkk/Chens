@@ -3,7 +3,7 @@
 <%= form_for [@workspace, @chat, @target_chat_member], url: workspace_chat_chat_member_path(@workspace, @chat, @target_chat_member), method: :patch do |f| %>
   <div class="form-group">
     <%= f.label :role %>
-    <%= f.select :role, options_for_select([['Member', 'member'], ['Admin', 'admin']], @target_chat_member.role), {}, class: 'form-control' %>
+    <%= f.select :role, options_for_select([['Member', 'member'], ['Moder', 'moder']], @target_chat_member.role), {}, class: 'form-control' %>
   </div>
 
   <div class="actions">

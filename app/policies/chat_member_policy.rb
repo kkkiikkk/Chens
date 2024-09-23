@@ -3,8 +3,8 @@ class ChatMemberPolicy < ApplicationPolicy
     record.role == 'member'
   end
 
-  def admin?
-    record.role == 'admin'
+  def moder?
+    record.role == 'moder'
   end
 
   def owner?
@@ -12,6 +12,6 @@ class ChatMemberPolicy < ApplicationPolicy
   end
 
   def can_manage?
-    ['owner', 'admin'].include?(record.role)
+    ['owner', 'moder'].include?(record.role)
   end
 end

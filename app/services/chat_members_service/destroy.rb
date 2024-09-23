@@ -3,7 +3,7 @@ module ChatMembersService
     def call(target_chat_member, chat_member)
       if can_destroy?(chat_member, target_chat_member)
         target_chat_member.destroy
-        success({ text: destroy_message(chat_member, target_chat_member) })
+        success(destroy_message(chat_member, target_chat_member))
       else
         failure('You cannot delete this member')
       end
@@ -14,7 +14,7 @@ module ChatMembersService
     def can_destroy?(chat_member, target_chat_member)
       policy = ChatMemberPolicy.new(chat_member.user, chat_member)
       (policy.owner? && target_chat_member != chat_member) ||
-        (policy.admin? && target_chat_member.role != 'admin') ||
+        (policy.moder? && target_chat_member.role != 'moder') ||
         (policy.member? && target_chat_member == chat_member)
     end
 
