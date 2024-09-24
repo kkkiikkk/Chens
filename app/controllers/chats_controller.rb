@@ -2,6 +2,7 @@ class ChatsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workspace
   before_action :require_workspace_owner!, only: [:new, :create, :destroy]
+  before_action :set_chat, only: [:edit, :update, :destroy]
 
   def index
     @chats = ChatsQuery.new(@workspace, current_user).all_chats
@@ -34,10 +35,17 @@ class ChatsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-  
 
+  def edit
+  end
+
+  def update
+    if @chat.update(update_chat_params)
+      redirect_to workspace_chats_path(@workspace), notice: "Chat was succesfully updated"
+    end
+  end
+  
   def destroy
-    @chat = @workspace.chats.find(params[:id])
     @chat.destroy
     redirect_to workspace_chats_path(@workspace), notice: 'Chat was successfully deleted.'
   end
@@ -52,8 +60,12 @@ class ChatsController < ApplicationController
     end
   end
 
-  def chat_params
-    params.permit(:name, :chat_type).merge(companion_id: params[:companion_id])
+  def set_chat
+    @chat = @workspace.chats.find(params[:id])
+  end
+
+  def update_chat_params
+    params.require(:chat).permit(:chat_status)
   end
 
   def require_workspace_owner!

@@ -11,6 +11,7 @@ class Chat < ApplicationRecord
   scope :private_chats, -> { where(chat_type: 'private') }
   scope :p2p_chats, -> { where(chat_type: 'p2p') }
   scope :active, -> { where(chat_status: 'active') }
+  scope :archive, -> { where(chat_status: 'archive') }
   scope :for_workspace, ->(workspace_id) { where(workspace_id: workspace_id) }
   scope :for_user, ->(user_id) { joins(:chat_members).where(chat_members: { user_id: user_id }) }
 
