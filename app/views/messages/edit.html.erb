@@ -1,0 +1,10 @@
+<h1>Edit Message</h1>
+
+<turbo-frame id="edit_message_<%= @message.id %>">
+  <%= form_with(model: [@workspace, @chat, @message], local: false) do |form| %>
+    <div class="form-group">
+      <%= form.text_area :text, class: "form-control" %>
+    </div>
+    <%= form.submit "Update Message", class: "btn btn-primary" %>
+  <% end %>
+</turbo-frame>

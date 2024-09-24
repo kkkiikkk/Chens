@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_17_081242) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_20_080449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,26 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_081242) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "chat_members", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.bigint "user_id", null: false
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_chat_members_on_chat_id"
+    t.index ["user_id"], name: "index_chat_members_on_user_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.string "name"
+    t.string "chat_type"
+    t.string "chat_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "workspace_id", null: false
+    t.index ["workspace_id"], name: "index_chats_on_workspace_id"
+  end
+
   create_table "invites", force: :cascade do |t|
     t.string "email"
     t.string "token", null: false
@@ -54,6 +74,18 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_081242) do
     t.index ["token"], name: "index_invites_on_token", unique: true
     t.index ["user_id"], name: "index_invites_on_user_id"
     t.index ["workspace_id"], name: "index_invites_on_workspace_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string "text", null: false
+    t.bigint "sender_id", null: false
+    t.bigint "chat_id", null: false
+    t.bigint "reply_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["reply_id"], name: "index_messages_on_reply_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "user_workspaces", force: :cascade do |t|
@@ -98,8 +130,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_081242) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chat_members", "chats"
+  add_foreign_key "chat_members", "users"
+  add_foreign_key "chats", "workspaces"
   add_foreign_key "invites", "users"
   add_foreign_key "invites", "workspaces"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "messages", column: "reply_id"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "user_workspaces", "users"
   add_foreign_key "user_workspaces", "workspaces"
   add_foreign_key "workspaces", "users"

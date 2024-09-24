@@ -1,0 +1,14 @@
+<h1><%= @chat.name %> - <%= @chat.chat_type.capitalize %></h1>
+
+<p>Status: <%= @chat.chat_status.capitalize %></p>
+
+<h2>Chat Members</h2>
+<ul>
+  <% @chat.chat_members.each do |member| %>
+    <li>
+      <%= member.user.name %> (<%= member.role.capitalize %>)
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to 'Back to Chats', workspace_chats_path(@workspace) %>

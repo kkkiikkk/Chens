@@ -11,7 +11,7 @@ class InvitesController < ApplicationController
     result = InvitesService::Create.call(@workspace, @invite, current_user)
     
     if result.success?
-      redirect_to workspace_path(@workspace), notice: result[:payload][:text]
+      redirect_to workspace_path(@workspace), notice: result[:payload]
     else 
       redirect_to workspace_path(@workspace), notice: result[:error]
     end

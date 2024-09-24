@@ -52,3 +52,4 @@ end
 
 gem "devise"
 gem "listen", "~> 3.9"
+gem 'pundit'

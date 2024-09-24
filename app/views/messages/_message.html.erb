@@ -1,0 +1,20 @@
+<li id="message_<%= message.id %>" class="message">
+  <strong><%= message.sender.name %>:</strong> <%= message.text %>
+
+  <% if message.image.present? %>
+    <div class="message-image">
+      <%= image_tag message.image %>
+    </div>
+  <% end %>
+
+  <% if message.reply %>
+    <div class="message-reply">
+      <strong>Reply to:</strong> <%= link_to message.reply.text.truncate(30), workspace_chat_message_path(workspace, chat, message.reply) %>
+    </div>
+  <% end %>
+
+  <div class="message-actions">
+    <%= link_to 'Edit', edit_workspace_chat_message_path(workspace, chat, message), class: 'btn btn-warning' %>
+    <%= link_to 'Delete', workspace_chat_message_path(workspace, chat, message), data: { turbo_method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+  </div>
+</li>

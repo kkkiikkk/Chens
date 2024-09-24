@@ -1,0 +1,15 @@
+<h1>Members in Chat: <%= @chat.name %></h1>
+
+<ul>
+  <% @chat_members.each do |member| %>
+    <li>
+      <%= member.user.name %> - <%= member.role.capitalize %>
+      <%= link_to 'Remove', workspace_chat_chat_member_path(@workspace, @chat, member), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <%= link_to 'Edit Role', edit_workspace_chat_chat_member_path(@workspace, @chat, member), class: 'btn btn-warning' %>
+    </li>
+  <% end %>
+</ul>
+
+  <%= link_to 'Add Member', new_workspace_chat_chat_member_path(@workspace, @chat), class: 'btn btn-primary' %>
+
+<%= link_to 'Back to Chat', workspace_chat_path(@workspace, @chat), class: 'btn btn-secondary' %>

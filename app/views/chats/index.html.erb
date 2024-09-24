@@ -1,0 +1,12 @@
+<h1>Chats in <%= @workspace.name %></h1>
+
+<%= link_to 'Create New Chat', new_workspace_chat_path(@workspace), class: 'btn btn-primary' if policy(@workspace).owner? %>
+
+<ul>
+  <% @chats.each do |chat| %>
+    <li>
+      <%= link_to chat.name, workspace_chat_path(@workspace, chat) %> 
+      <%= "(#{chat.chat_type.capitalize})" %> 
+    </li>
+  <% end %>
+</ul>

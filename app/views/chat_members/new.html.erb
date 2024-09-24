@@ -1,0 +1,12 @@
+<h1>Add Member to <%= @chat.name %></h1>
+
+<%= form_for [@workspace, @chat, @chat_member] do |f| %>
+  <div class="form-group">
+    <%= f.label :user_id, 'User ID' %>
+    <%= f.number_field :user_id, class: 'form-control' %>
+  </div>
+
+  <%= f.submit 'Add Member', class: 'btn btn-primary' %>
+<% end %>
+
+<%= link_to 'Back to Chat', workspace_chat_path(@workspace, @chat) %>

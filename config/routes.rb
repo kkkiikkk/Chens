@@ -1,22 +1,25 @@
 Rails.application.routes.draw do
   devise_for :users
+  
   resources :workspaces do
     resource :user_workspace, only: [:edit, :update]
     resource :invites, only: [:create]
+    
+    resources :chats do
+      resources :chat_members, only: [:index, :new, :create, :destroy, :edit, :update]
+      resources :messages, only: [:index, :new, :create, :destroy, :edit, :update]
+    end
   end
 
   get 'invites/accept/:token', to: 'invites#accept', as: 'accept_invite'
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/*
+  # PWA routes
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  # Defines the root path route ("/")
+  # Define the root path route
   # root "posts#index"
 end
