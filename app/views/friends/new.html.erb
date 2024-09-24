@@ -1,0 +1,10 @@
+<%= form_for(@friend) do |f| %>
+  <div class="field">
+    <%= f.label :user2 %>
+    <%= f.text_field :user2 %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Send friendship" %>
+  </div>
+<% end %>

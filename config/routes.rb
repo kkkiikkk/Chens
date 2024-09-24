@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :friends
+
   get 'invites/accept/:token', to: 'invites#accept', as: 'accept_invite'
 
   # Health check route
