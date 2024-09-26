@@ -1,0 +1,38 @@
+<h1>My Friends</h1>
+
+<h2>Approved Friends</h2>
+<ul>
+  <% @friends.each do |friend| %>
+    <% other_user = friend.user1 == current_user ? friend.user2 : friend.user1 %>
+    <li>
+      <%= other_user.name %>
+      <%= link_to 'Delete', friend_path(friend), method: :delete, data: { confirm: 'Are you sure you want to remove this friend?', turbo_method: :delete }, class: 'btn btn-danger' %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Sent Friend Requests</h2>
+<ul>
+  <% @sent_requests.each do |friend| %>
+    <% other_user = friend.user1 == current_user ? friend.user2 : friend.user1 %>
+    <li>
+      <%= other_user.name %>
+      <%= link_to 'Delete', friend_path(friend), method: :delete, data: { confirm: 'Are you sure you want to reject this friend request?', turbo_method: :delete }, class: 'btn btn-danger' %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Incoming Friend Requests</h2>
+<ul>
+  <% @incoming_requests.each do |friend| %>
+    <% other_user = friend.user1 == current_user ? friend.user2 : friend.user1 %>
+    <li>
+      <%= other_user.name %>
+      <%= link_to 'Accept', accept_friend_path(friend), method: :post, data: { turbo_method: :post }, class: 'btn btn-success' %>
+      <%= link_to 'Delete', friend_path(friend), method: :delete, data: { confirm: 'Are you sure you want to reject this friend request?', turbo_method: :delete }, class: 'btn btn-danger' %>
+    </li>
+  <% end %>
+</ul>
+
+
+<%= link_to 'Send New Friend Request', new_friend_path, class: 'btn btn-primary' %>

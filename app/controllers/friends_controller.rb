@@ -3,6 +3,9 @@ class FriendsController < ApplicationController
 
   def index
     @friends = Friend.approved.my(current_user)
+    # @friend_requests = Friend.pending.my(current_user)
+    @sent_requests = Friend.pending.and(Friend.where(user1: current_user))
+    @incoming_requests = Friend.pending.and(Friend.where(user2: current_user))
   end
 
   def new
@@ -10,26 +13,19 @@ class FriendsController < ApplicationController
   end
 
   def create
-    p friend_params
     @friend = Friend.new
-    
-    # Convert user2 id from the params to a User object
-    @friend.user1 = current_user
-    @friend.user2 = User.find(friend_params[:user2])  # Find the user by ID
-
-    if @friend.save
-      redirect_to friends_path, notice: "Friendship request sent!"
-    else
-      render :new, status: :unprocessable_entity
-    end
+    response = FriendsService::Create.call(friend_params, current_user, @friend)
+    handle_response(response)
   end
 
   def accept
-    # Logic to accept a friendship request
+    response = FriendsService::Accept.call(current_user, params[:id])
+    handle_response(response)
   end
 
   def destroy
-    # Logic to destroy a friendship
+    response = FriendsService::Destroy.call(params[:id], current_user)
+    handle_response(response)
   end
 
   private
@@ -37,4 +33,13 @@ class FriendsController < ApplicationController
   def friend_params
     params.require(:friend).permit(:user2)
   end
+
+  def handle_response(response)
+    if response.success?
+      redirect_to friends_path, notice: response[:payload]
+    else
+      puts response[:error]
+      redirect_to friends_path, notice: response[:error]
+    end
+  end  
 end
