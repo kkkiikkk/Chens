@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_20_080449) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_24_092822) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_080449) do
     t.datetime "updated_at", null: false
     t.bigint "workspace_id", null: false
     t.index ["workspace_id"], name: "index_chats_on_workspace_id"
+  end
+
+  create_table "friends", force: :cascade do |t|
+    t.bigint "user1_id", null: false
+    t.bigint "user2_id", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user1_id"], name: "index_friends_on_user1_id"
+    t.index ["user2_id"], name: "index_friends_on_user2_id"
   end
 
   create_table "invites", force: :cascade do |t|
@@ -133,6 +143,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_080449) do
   add_foreign_key "chat_members", "chats"
   add_foreign_key "chat_members", "users"
   add_foreign_key "chats", "workspaces"
+  add_foreign_key "friends", "users", column: "user1_id"
+  add_foreign_key "friends", "users", column: "user2_id"
   add_foreign_key "invites", "users"
   add_foreign_key "invites", "workspaces"
   add_foreign_key "messages", "chats"
