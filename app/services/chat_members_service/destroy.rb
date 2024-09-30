@@ -3,6 +3,7 @@ module ChatMembersService
     def call(target_chat_member, chat_member)
       if can_destroy?(chat_member, target_chat_member)
         target_chat_member.destroy
+        ChatMembersMailer.remove_from_the_chat(target_chat_member.user, target_chat_member.chat).deliver_now
         success(destroy_message(chat_member, target_chat_member))
       else
         failure('You cannot delete this member')
