@@ -24,5 +24,34 @@
   </div>
 <% end %>
 
+<h2>Members in This Workspace</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @workspace.user_workspaces.each do |user_workspace| %>
+      <tr>
+        <td><%= user_workspace.profile_name %></td>
+        <td><%= user_workspace.user.email %></td>
+        <td><%= user_workspace.role %></td>
+        <td>
+          <% if user_workspace.user != current_user %>
+            <%= link_to 'Remove', remove_user_workspace_user_workspace_path(@workspace, user_id: user_workspace.user.id), method: :delete, data: { confirm: 'Are you sure?', turbo_method: :delete }, class: 'btn btn-danger' %>
+          <% else %>
+            <span class="btn btn-secondary disabled">You</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <h2>Chats</h2>
 <p><%= link_to 'View All Chats in This Workspace', workspace_chats_path(@workspace), class: 'btn btn-secondary' %></p>

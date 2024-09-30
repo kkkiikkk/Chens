@@ -42,7 +42,6 @@ class MessagesController < ApplicationController
   end
 
   def marks_as_read
-    puts "MARK STARTING EXECUTE"    
     if @message.sender != current_user && !MessagePolicy.new(current_user, @message).seen?
       @message.message_reads.create!(user: current_user)
       ChatChannel.broadcast_to(@chat, {

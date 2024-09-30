@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   devise_for :users
   
   resources :workspaces do
-    resource :user_workspace, only: [:edit, :update]
+    resource :user_workspace, only: [:edit, :update] do
+      delete 'remove/:user_id', on: :collection, action: :destroy, as: :remove_user
+    end
     resource :invites, only: [:create]
     
     resources :chats do
