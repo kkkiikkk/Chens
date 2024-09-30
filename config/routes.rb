@@ -7,7 +7,11 @@ Rails.application.routes.draw do
     
     resources :chats do
       resources :chat_members, only: [:index, :new, :create, :destroy, :edit, :update]
-      resources :messages, only: [:index, :new, :create, :destroy, :edit, :update]
+      resources :messages, only: [:index, :new, :create, :destroy, :edit, :update, :marks_as_read] do
+        member do
+          post :marks_as_read
+        end
+      end
     end
   end
 

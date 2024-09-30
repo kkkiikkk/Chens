@@ -1,11 +1,11 @@
 class MessagesController < ApplicationController
   before_action :set_workspace
   before_action :set_chat
-  before_action :check_user_in_chat, only: [:new, :create, :edit, :update, :destroy, :index]
-  before_action :set_message, only: [:edit, :update, :destroy]
+  before_action :check_user_in_chat, only: [:new, :create, :edit, :update, :destroy, :index, :marks_as_read]
+  before_action :set_message, only: [:edit, :update, :destroy, :marks_as_read]
 
   def index
-    @messages = @chat.messages
+    @messages = @chat.messages.chronological
   end
 
   def create
@@ -39,6 +39,20 @@ class MessagesController < ApplicationController
       format.turbo_stream
       format.html { redirect_to workspace_chat_messages_path(@workspace, @chat), notice: 'Message deleted.' }
     end
+  end
+
+  def marks_as_read
+    puts "MARK STARTING EXECUTE"    
+    if @message.sender != current_user && !MessagePolicy.new(current_user, @message).seen?
+      @message.message_reads.create!(user: current_user)
+      ChatChannel.broadcast_to(@chat, {
+        message_id: @message.id,
+        action: 'message_seen',
+        seen_by: @message.read_by_users.map(&:name)
+      })
+    end
+
+    head :ok
   end
 
   private
