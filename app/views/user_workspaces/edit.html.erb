@@ -1,30 +1,11 @@
-<%= form_with(model: [@workspace, @user_workspace], local: true) do |f| %>
-  <div class="field">
-    <%= f.label :profile_name %>
-    <%= f.text_field :profile_name %>
-  </div>
+<%= form_with model: [@workspace, @user_workspace], local: true do |f| %>
+  <%= f.label :profile_name %>
+  <%= f.text_field :profile_name %>
 
-  <div class="field">
-    <%= f.label :profile_description %>
-    <%= f.text_area :profile_description %>
-  </div>
+  <% if current_user_is_owner? %>
+    <%= f.label :role %>
+    <%= f.select :role, options_for_select(['member', 'admin', 'owner'], @user_workspace.role) %>
+  <% end %>
 
-  <div class="field">
-    <%= f.label :profile_status %>
-    <%= f.select :profile_status, ['away', 'break', 'online', 'busy'] %>
-  </div>
-
-  <div class="field">
-    <%= f.label :profile_title %>
-    <%= f.text_field :profile_title %>
-  </div>
-
-  <div class="field">
-    <%= f.label :profile_avatar %>
-    <%= f.file_field :profile_avatar %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update Profile" %>
-  </div>
+  <%= f.submit 'Save' %>
 <% end %>

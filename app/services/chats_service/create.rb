@@ -26,14 +26,28 @@ module ChatsService
 
     def create_general_chat
       if @chat.save
-        new_chat_member = ChatMember.new(user: @user, chat: @chat, role: 'owner')
-        if new_chat_member.save
-          success("Chat was successfully created")
-        else          
-          failure("Chat can't be created. Please try again later.")
-        end
+        ChatMember.create!(user: @chat.workspace.user, chat: @chat, role: 'owner')
+        
+        chat_members_data = chat_admins
+        ChatMember.insert_all(chat_members_data) if chat_members_data.any?
+
+        success("Chat was successfully created and admins assigned.")
       else
         failure("Chat can't be created. Please try again later.")
+      end
+    end
+
+    def chat_admins
+      admin_users = @chat.workspace.user_workspaces.where(role: 'admin')
+
+      chat_members_data = admin_users.map do |admin_user_workspace|
+        {
+          user_id: admin_user_workspace.user_id,
+          chat_id: @chat.id,
+          role: 'admin',
+          created_at: Time.current,
+          updated_at: Time.current
+        }
       end
     end
   end

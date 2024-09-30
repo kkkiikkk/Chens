@@ -22,7 +22,7 @@ class WorkspacesController < ApplicationController
     @workspace = Workspace.new(workspace_params)
     @workspace.user = current_user
 
-    result = WorkspacesUserService::Create.call(@workspace, current_user)
+    result = WorkspacesUserService::Create.call(@workspace, current_user, 'owner')
 
     if result.success?
       redirect_to workspaces_path, notice: 'Workspace was successfully created.'

@@ -32,7 +32,7 @@ module InvitesService
     end
 
     def assign_user_to_workspace
-      result = WorkspacesUserService::Create.call(@invite.workspace, @user)
+      result = WorkspacesUserService::Create.call(@invite.workspace, @user, role: 'member')
 
       if result.success?
         success('User successfully joined the workspace')
