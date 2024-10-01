@@ -1,7 +1,7 @@
 class UserWorkspacesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workspace
-  before_action :set_user_workspace, only: [:edit, :update, :destroy]
+  before_action :set_user_workspace, only: [:edit, :destroy, :update]
   before_action :authorize_owner_or_self!, only: [:edit, :update, :destroy]
 
   def edit
@@ -9,7 +9,8 @@ class UserWorkspacesController < ApplicationController
 
   def update
     if @user_workspace.update(user_workspace_params)
-      redirect_to workspace_path(@workspace), notice: 'Your profile in the workspace was successfully updated.'
+      UserWorkspaceMailer.change_role(@user_workspace).deliver_now if ['admin'].include?(user_workspace_params[:role])
+      redirect_to workspace_path(@workspace), notice: 'The profile in the workspace was successfully updated.'
     else
       render :edit
     end

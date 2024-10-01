@@ -1,11 +1,15 @@
-<%= form_with model: [@workspace, @user_workspace], local: true do |f| %>
-  <%= f.label :profile_name %>
-  <%= f.text_field :profile_name %>
+<%= form_for [@workspace, @user_workspace], url: workspace_user_workspace_path(@workspace, user_id: @user_workspace.user.id), method: :patch, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :profile_name %>
+    <%= f.text_field :profile_name, class: "form-control" %>
+  </div>
 
-  <% if current_user_is_owner? %>
+  <div class="form-group">
     <%= f.label :role %>
-    <%= f.select :role, options_for_select(['member', 'admin', 'owner'], @user_workspace.role) %>
-  <% end %>
+    <%= f.select :role, options_for_select(['member', 'admin'], @user_workspace.role), class: "form-control" %>
+  </div>
 
-  <%= f.submit 'Save' %>
+  <div class="form-group">
+    <%= f.submit 'Save', class: "btn btn-primary" %>
+  </div>
 <% end %>
