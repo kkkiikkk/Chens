@@ -24,11 +24,6 @@ class ChatMembersController < ApplicationController
     end
   end
 
-  def destroy
-    result = ChatMembersService::Destroy.call(target_chat_member(params[:id]), @chat_member)
-    handle_result(result)
-  end
-
   def edit
     @target_chat_member = target_chat_member(params[:id])
   end
@@ -36,6 +31,11 @@ class ChatMembersController < ApplicationController
   def update  
     update_params = update_chat_member_params
     result = ChatMembersService::ChangeRole.call(target_chat_member(params[:id]), @chat_member, update_params[:role])
+    handle_result(result)
+  end
+
+  def destroy
+    result = ChatMembersService::Destroy.call(target_chat_member(params[:id]), @chat_member)
     handle_result(result)
   end
 
