@@ -19,7 +19,7 @@ module InvitesService
     def accept_private_invite
       return failure('Invite already confirmed') if @invite_policy.confirmed?
       @invite.update(status: 'confirmed')
-      
+
       assign_user_to_workspace
     end
 
@@ -27,12 +27,12 @@ module InvitesService
       if @invite.workspace.users.exists?(@user.id)
         return failure('User is already in the workspace')
       end
-
+      
       assign_user_to_workspace
     end
 
     def assign_user_to_workspace
-      result = WorkspacesUserService::Create.call(@invite.workspace, @user, role: 'member')
+      result = WorkspacesUserService::Create.call(@invite.workspace, @user, 'member')
 
       if result.success?
         success('User successfully joined the workspace')

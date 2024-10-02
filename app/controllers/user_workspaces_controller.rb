@@ -1,19 +1,30 @@
 class UserWorkspacesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workspace
-  before_action :set_user_workspace, only: [:edit, :update]
-  before_action :authorize_owner_or_self!, only: [:edit, :update]
+  before_action :set_user_workspace, only: [:edit, :destroy, :update]
+  before_action :authorize_owner_or_self!, only: [:edit, :update, :destroy]
 
   def edit
   end
 
   def update
     if @user_workspace.update(user_workspace_params)
-      redirect_to workspace_path(@workspace), notice: 'Your profile in the workspace was successfully updated.'
+      UserWorkspaceMailer.change_role(@user_workspace).deliver_now if ['admin'].include?(user_workspace_params[:role])
+      redirect_to workspace_path(@workspace), notice: 'The profile in the workspace was successfully updated.'
     else
       render :edit
     end
   end
+
+  def destroy
+    if @user_workspace.user != current_user
+      @user_workspace.destroy
+      UserWorkspaceMailer.remove_user_workspace(@user_workspace.user, @workspace).deliver_now
+      redirect_to workspace_path(@workspace), notice: 'User removed from workspace successfully.'
+    else
+      redirect_to workspace_path(@workspace), alert: 'You cannot remove yourself from the workspace.'
+    end
+  end  
 
   private
 

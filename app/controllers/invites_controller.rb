@@ -9,7 +9,8 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-    result = InvitesService::Create.call(@workspace, @invite, current_user)
+    target_user = User.find_by(email: @invite.email)
+    result = InvitesService::Create.call(@workspace, @invite, current_user, target_user)
     
     if result.success?
       redirect_to workspace_path(@workspace), notice: result[:payload]
@@ -20,7 +21,7 @@ class InvitesController < ApplicationController
 
   def accept
     @invite = Invite.find_by(token: params[:token])
-    
+
     result = InvitesService::Accept.call(@invite, current_user)
     if result.success?
     else

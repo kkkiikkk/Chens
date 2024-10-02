@@ -3,7 +3,6 @@ class FriendsController < ApplicationController
 
   def index
     @friends = Friend.approved.my(current_user)
-    # @friend_requests = Friend.pending.my(current_user)
     @sent_requests = Friend.pending.and(Friend.where(user1: current_user))
     @incoming_requests = Friend.pending.and(Friend.where(user2: current_user))
   end

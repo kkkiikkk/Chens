@@ -1,6 +1,6 @@
 <h1>Messages in <%= @chat.name %></h1>
 
-<div id="chat" data-chat-id="<%= @chat.id %>">
+<div id="chat" data-chat-id="<%= @chat.id %>" data-workspace-id="<%= @workspace.id %>">
   
   <div id="messages" class="messages-list">
     <% @messages.each do |message| %>

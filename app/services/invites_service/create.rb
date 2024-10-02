@@ -2,8 +2,8 @@ module InvitesService
   class Create < ApplicationService
     include Rails.application.routes.url_helpers
 
-    def call(workspace, invite, current_user)
-      user_in_workspace(workspace, current_user)
+    def call(workspace, invite, current_user, target_user)
+      user_in_workspace(workspace, target_user)
       return failure('User already in workspace') if @expected_user
 
       @invite = invite
@@ -19,8 +19,8 @@ module InvitesService
 
     private
 
-    def user_in_workspace(workspace, current_user)
-      @expected_user = workspace.user_workspaces.find_by(user: current_user)
+    def user_in_workspace(workspace, target_user)
+      @expected_user = workspace.user_workspaces.find_by(user: target_user)
     end
 
     def send_private_invite(workspace)
