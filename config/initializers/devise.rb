@@ -305,6 +305,12 @@ Devise.setup do |config|
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
   config.navigational_formats = ['*/*', :html, :turbo_stream]
+
+  config.omniauth :google_oauth2, Rails.application.credentials.google.client_id, Rails.application.credentials.google.client_secret, {
+    scope: 'email,profile',
+    prompt: 'select_account',
+    access_type: 'offline'
+  }
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is
