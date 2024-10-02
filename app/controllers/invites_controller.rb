@@ -21,8 +21,7 @@ class InvitesController < ApplicationController
 
   def accept
     @invite = Invite.find_by(token: params[:token])
-    p @invite 
-    puts "INVITE"
+
     result = InvitesService::Accept.call(@invite, current_user)
     if result.success?
     else

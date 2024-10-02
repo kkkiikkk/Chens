@@ -12,6 +12,7 @@ class Message < ApplicationRecord
   after_destroy_commit :broadcast_destroy_message
 
   scope :chronological, -> { order(created_at: :asc, id: :asc) }
+  scope :from_last_30_minutes, -> { where(created_at: 30.minutes.ago..Time.current) }
 
   private
 

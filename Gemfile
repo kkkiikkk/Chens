@@ -53,3 +53,7 @@ end
 gem "devise"
 gem "listen", "~> 3.9"
 gem 'pundit'
+
+gem "sidekiq", "~> 7.3"
+
+gem "sidekiq-scheduler", "~> 5.0"

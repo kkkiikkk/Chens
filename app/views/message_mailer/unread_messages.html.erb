@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Unread Messages Notification</h1>
+
+    <p>Hello <%= @user.email %>,</p>
+
+    <p>You have unread messages in the following chats:</p>
+
+    <ul>
+      <% @messages.group_by(&:chat).each do |chat, messages| %>
+        <li>
+          <strong>Chat: <%= chat.name %></strong>
+          <ul>
+            <% messages.each do |message| %>
+              <li>
+                <strong>From:</strong> <%= message.sender.name %> <br>
+                <strong>Message:</strong> <%= message.text.truncate(50) %> <br>
+                <strong>Sent at:</strong> <%= message.created_at.strftime("%Y-%m-%d %H:%M") %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  </body>
+</html>

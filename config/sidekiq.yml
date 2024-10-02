@@ -1,0 +1,6 @@
+:scheduler:
+  :schedule:
+    unread_messages_notifier_worker:
+      cron: "*/30 * * * *"
+      class: "UnreadMessagesNotificationWorker"
+      queue: default
