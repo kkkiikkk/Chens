@@ -11,6 +11,7 @@ class MessagesController < ApplicationController
   def create
     @message = @chat.messages.build(chat_params)
     @message.sender = current_user
+    @message.sender_name = current_user.name
 
     if @message.save
       respond_to do |format|
