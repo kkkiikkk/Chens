@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   }
 
   resources :workspaces do
-    resources :user_workspaces, only: [:edit, :update, :destroy], param: :user_id do
+    resources :user_workspaces, only: [:edit, :update, :destroy, :index], param: :user_id do
       member do
         post :block
         post :unblock

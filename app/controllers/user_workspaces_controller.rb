@@ -6,6 +6,11 @@ class UserWorkspacesController < ApplicationController
   before_action :current_user_not_blocked?, only: [:update, :edit]
 
   def index
+    @user_workspaces = if params[:search].present?
+                         UsersWorkspaceQuery.new(params[:search], @workspace).users_workspace
+                       else
+                         @workspace.user_workspaces
+                       end
   end
 
   def edit
