@@ -1,7 +1,5 @@
-class UnreadMessagesNotificationWorker
-  include Sidekiq::Worker
-
-  def perform
+class UnreadMessagesNotificationWorker < ApplicationWorker
+  def execute
     User.find_each do |user|
       unread_messages = UnreadMessagesQuery.new(user).unread_messages
 
