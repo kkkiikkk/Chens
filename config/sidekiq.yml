@@ -4,3 +4,7 @@
       cron: "*/30 * * * *"
       class: "UnreadMessagesNotificationWorker"
       queue: default
+    delete_archive_chats_worker:
+      cron: "0 0 * * *"
+      class: "DeleteArchiveChatsWorker"
+      queue: default
