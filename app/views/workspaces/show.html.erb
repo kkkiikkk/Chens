@@ -45,6 +45,8 @@
           <% if user_workspace.user != current_user %>
             <%= link_to 'Remove', workspace_user_workspace_path(@workspace, user_id: user_workspace.user.id), method: :delete, data: { confirm: 'Are you sure?', turbo_method: :delete }, class: 'btn btn-danger' %>
             <%= link_to 'Edit Profile', edit_workspace_user_workspace_path(@workspace, user_id: user_workspace.user.id), class: 'btn btn-primary' %>
+            <%= link_to 'Block', block_workspace_user_workspace_path(@workspace, user_id: user_workspace.user.id), method: :delete, data: { confirm: 'Are you sure?', turbo_method: :post }, class: 'btn btn-danger' %>
+            <%= link_to 'Unblock', unblock_workspace_user_workspace_path(@workspace, user_id: user_workspace.user.id), method: :delete, data: { confirm: 'Are you sure?', turbo_method: :post }, class: 'btn btn-danger' %>
           <% else %>
             <%= link_to 'Edit Profile', edit_workspace_user_workspace_path(@workspace, user_id: user_workspace.user.id), class: 'btn btn-primary' %>
             <span class="btn btn-secondary disabled">You</span>

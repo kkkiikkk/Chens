@@ -3,6 +3,7 @@ class MessagesController < ApplicationController
   before_action :set_chat
   before_action :check_user_in_chat, only: [:new, :create, :edit, :update, :destroy, :index, :marks_as_read]
   before_action :set_message, only: [:edit, :update, :destroy, :marks_as_read]
+  before_action :current_user_not_blocked?, only: [:new, :create, :edit, :update, :index]
 
   def index
     @messages = @chat.messages.chronological
@@ -67,6 +68,14 @@ class MessagesController < ApplicationController
 
   def set_message
     @message = @chat.messages.find(params[:id])
+  end
+
+  def current_user_not_blocked?
+    user_workspace = @workspace.user_workspaces.find_by!(user_id: current_user.id)
+
+    if UserWorkspacePolicy.new(current_user, user_workspace).blocked?
+      redirect_to workspace_path(@workspace), alert: 'User had been blocked in this workspace'
+    end
   end
 
   def check_user_in_chat

@@ -1,8 +1,12 @@
 class UserWorkspacesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workspace
-  before_action :set_user_workspace, only: [:edit, :destroy, :update]
-  before_action :authorize_owner_or_self!, only: [:edit, :update, :destroy]
+  before_action :set_user_workspace, only: [:edit, :destroy, :update, :block, :unblock]
+  before_action :authorize_owner_or_self!, only: [:edit, :update, :destroy, :block, :unblock]
+  before_action :current_user_not_blocked?, only: [:update, :edit]
+
+  def index
+  end
 
   def edit
   end
@@ -24,11 +28,32 @@ class UserWorkspacesController < ApplicationController
     else
       redirect_to workspace_path(@workspace), alert: 'You cannot remove yourself from the workspace.'
     end
-  end  
+  end
+
+  def block
+    result = WorkspacesUserService::Block.call(@user_workspace)
+
+    if result.success?
+      redirect_to workspace_path(@workspace), notice: result[:payload]
+    else
+      redirect_to workspace_path(@workspace), alert: result[:error]
+    end
+  end
+
+  def unblock
+    return redirect_to workspace_path(@workspace), alert: 'User are not blocked' unless @user_workspace.blocked
+    @user_workspace.blocked = false
+
+    if @user_workspace.save
+      redirect_to workspace_path(@workspace), alert: 'User was succesfully unblocked'
+    else
+      redirect_to workspace_path(@workspace), alert: 'User cant be unblocked'
+    end
+  end
 
   private
 
-  def set_user_workspace
+  def set_user_workspace 
     @user_workspace = @workspace.user_workspaces.find_by(user_id: params[:user_id])
 
     unless @user_workspace
@@ -52,6 +77,12 @@ class UserWorkspacesController < ApplicationController
 
   def current_user_is_owner?
     @workspace.user_workspaces.find_by(user_id: current_user.id, role: 'owner').present?
+  end
+
+  def current_user_not_blocked?
+    if UserWorkspacePolicy.new(current_user, @user_workspace).blocked?
+      redirect_to workspace_path(@workspace), alert: 'You are blocked at this workspace.'
+    end
   end
 
   def user_workspace_params
