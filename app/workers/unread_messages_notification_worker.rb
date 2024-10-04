@@ -5,7 +5,7 @@ class UnreadMessagesNotificationWorker < ApplicationWorker
 
       next if unread_messages.empty?
 
-      MessageMailer.unread_messages(user, unread_messages).deliver_now
+      MessageMailer.unread_messages(user, unread_messages).deliver_now if user.user_setting.notifications
     end
   end
 end

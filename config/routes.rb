@@ -4,7 +4,12 @@ Rails.application.routes.draw do
   }
 
   resources :workspaces do
-    resources :user_workspaces, only: [:edit, :update, :destroy], param: :user_id
+    resources :user_workspaces, only: [:edit, :update, :destroy, :index], param: :user_id do
+      member do
+        post :block
+        post :unblock
+      end
+    end
     resource :invites, only: [:create]
     
     resources :chats do
@@ -22,6 +27,8 @@ Rails.application.routes.draw do
       post :accept
     end
   end
+
+  resource :user_settings, only: [:edit, :update]
 
   get 'invites/accept/:token', to: 'invites#accept', as: 'accept_invite'
 

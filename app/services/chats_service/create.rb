@@ -4,8 +4,11 @@ module ChatsService
       @user = current_user
       @params = params
       @chat = Chat.new(chat_type: @params[:chat_type], chat_status: 'active', name: @params[:chat_name], workspace: workspace)
-
+      
       if @params[:chat_type] == 'p2p'
+        if companion_workspace(workspace).blocked
+          return failure('Companion has been blocked')
+        end
         create_p2p_chat
       else
         create_general_chat
@@ -49,6 +52,10 @@ module ChatsService
           updated_at: Time.current
         }
       end
+    end
+
+    def companion_workspace(workspace)
+      UserWorkspace.find_by!(user_id: @params[:companion_id], workspace_id: workspace.id, blocked: false)
     end
   end
 end

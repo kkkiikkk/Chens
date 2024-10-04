@@ -1,11 +1,20 @@
 <h1>Chats in <%= @workspace.name %></h1>
 
-<%= link_to 'Create New Chat', new_workspace_chat_path(@workspace), class: 'btn btn-primary' if policy(@workspace).owner? %>
+<%= link_to 'Create New Chat', new_workspace_chat_path(@workspace), class: 'btn btn-primary' %>
 
 <ul>
   <% @chats.each do |chat| %>
     <li>
-      <%= link_to chat.name, workspace_chat_path(@workspace, chat) %> 
+      <% if chat.chat_type == 'p2p' %>
+        <% if chat.chat_members[0].user == current_user %>
+          <%= link_to chat.chat_members[1].user.name, workspace_chat_path(@workspace, chat) %> 
+        <% else %>
+          <%= link_to chat.chat_members[0].user.name, workspace_chat_path(@workspace, chat) %> 
+        <% end %>
+      <% else %>
+        <%= link_to chat.name, workspace_chat_path(@workspace, chat) %> 
+      <% end %>
+      
       <%= "(#{chat.chat_type.capitalize})" %> 
     </li>
   <% end %>
