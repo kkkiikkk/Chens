@@ -1,7 +1,7 @@
 class ChatsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_workspace
-  before_action :require_workspace_owner!, only: [:new, :create, :destroy]
+  before_action :require_workspace_owner!, only: [:create, :destroy]
   before_action :set_chat, only: [:edit, :update, :destroy]
 
   def index
@@ -69,7 +69,7 @@ class ChatsController < ApplicationController
   end
 
   def require_workspace_owner!
-    if !WorkspacePolicy.new(current_user, @workspace).owner?
+    if !WorkspacePolicy.new(current_user, @workspace).owner? && params[:companion_id].empty?
       redirect_to workspaces_path, notice: 'You can not manage the chat because you are not workspace owner'
     end
   end
