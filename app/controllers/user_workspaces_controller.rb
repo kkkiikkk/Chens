@@ -18,7 +18,7 @@ class UserWorkspacesController < ApplicationController
 
   def update
     if @user_workspace.update(user_workspace_params)
-      UserWorkspaceMailer.change_role(@user_workspace).deliver_now if ['admin'].include?(user_workspace_params[:role])
+      UserWorkspaceMailer.change_role(@user_workspace).deliver_now if ['admin'].include?(user_workspace_params[:role]) && @user_workspace.user.user_setting.notifications
       redirect_to workspace_path(@workspace), notice: 'The profile in the workspace was successfully updated.'
     else
       render :edit
@@ -28,7 +28,7 @@ class UserWorkspacesController < ApplicationController
   def destroy
     if @user_workspace.user != current_user
       @user_workspace.destroy
-      UserWorkspaceMailer.remove_user_workspace(@user_workspace.user, @workspace).deliver_now
+      UserWorkspaceMailer.remove_user_workspace(@user_workspace.user, @workspace).deliver_now if @user_workspace.user.user_setting.notifications
       redirect_to workspace_path(@workspace), notice: 'User removed from workspace successfully.'
     else
       redirect_to workspace_path(@workspace), alert: 'You cannot remove yourself from the workspace.'

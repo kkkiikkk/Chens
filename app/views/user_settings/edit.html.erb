@@ -1,0 +1,10 @@
+<%= form_for @user_setting, url: user_settings_path(@user_setting), method: :patch do |f| %>
+  <div class="form-group">
+    <%= f.label :notifications %>
+    <%= f.select :notifications, options_for_select([['On', true], ['Off', false]], @user_setting.notifications), {}, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit 'Update user settings', class: 'btn btn-primary' %>
+  </div>
+<% end %>

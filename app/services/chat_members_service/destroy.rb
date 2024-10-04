@@ -1,9 +1,11 @@
 module ChatMembersService
   class Destroy < ApplicationService
     def call(target_chat_member, chat_member)
+      return failure('You can not leave the p2p chat ') if target_chat_member.chat.chat_type == 'p2p'
+
       if can_destroy?(chat_member, target_chat_member)
         target_chat_member.destroy
-        ChatMembersMailer.remove_from_the_chat(target_chat_member.user, target_chat_member.chat).deliver_now
+        ChatMembersMailer.remove_from_the_chat(target_chat_member.user, target_chat_member.chat).deliver_now if arget_chat_member.user.user_setting.notifications
         success(destroy_message(chat_member, target_chat_member))
       else
         failure('You cannot delete this member')

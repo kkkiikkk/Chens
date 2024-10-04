@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_03_085039) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_04_090034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -109,6 +109,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_03_085039) do
     t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
+  create_table "user_settings", force: :cascade do |t|
+    t.boolean "notifications", default: true
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_settings_on_user_id"
+  end
+
   create_table "user_workspaces", force: :cascade do |t|
     t.string "profile_description"
     t.string "profile_name"
@@ -167,6 +175,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_03_085039) do
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "messages", column: "reply_id"
   add_foreign_key "messages", "users", column: "sender_id"
+  add_foreign_key "user_settings", "users"
   add_foreign_key "user_workspaces", "users"
   add_foreign_key "user_workspaces", "workspaces"
   add_foreign_key "workspaces", "users"

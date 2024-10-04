@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :user_settings, only: [:edit, :update]
+
   get 'invites/accept/:token', to: 'invites#accept', as: 'accept_invite'
 
   get "up" => "rails/health#show", as: :rails_health_check

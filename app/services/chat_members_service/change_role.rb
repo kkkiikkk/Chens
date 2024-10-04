@@ -20,7 +20,7 @@ module ChatMembersService
     def update_role(target_chat_member, role)
       target_chat_member.role = role
       if target_chat_member.save
-        ChatMembersMailer.change_role(target_chat_member).deliver_now
+        ChatMembersMailer.change_role(target_chat_member).deliver_now if target_chat_member.user.user_setting.notifications
         success('User role was successfully updated')
       else
         failure('Error while updating user role')

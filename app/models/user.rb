@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :user_workspaces, dependent: :destroy
   has_many :workspaces, through: :user_workspaces
+  has_one :user_setting
   has_one_attached :avatar
 
   devise :database_authenticatable, :registerable,
