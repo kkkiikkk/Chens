@@ -66,4 +66,7 @@ gem "omniauth-google-oauth2", "~> 1.2"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 
-gem "rspec", "~> 3.13"
+gem "factory_bot_rails", "~> 6.4"
+
+gem 'pundit-matchers'
+
