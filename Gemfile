@@ -43,6 +43,8 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -63,3 +65,8 @@ gem "omniauth", "~> 2.1"
 gem "omniauth-google-oauth2", "~> 1.2"
 
 gem "omniauth-rails_csrf_protection", "~> 1.0"
+
+gem "factory_bot_rails", "~> 6.4"
+
+gem 'pundit-matchers'
+
